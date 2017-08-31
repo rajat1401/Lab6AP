@@ -12,7 +12,7 @@ class BSTFilesBuilder {
 		Random rand = new Random();
 		for (int i = 1; i <= numTrees; i++) {
 		    try {
-				PrintWriter w = new PrintWriter("./src/" + i + ".txt", "UTF-8");
+				PrintWriter w = new PrintWriter("Desktop/Lab6AP" + i + ".txt", "UTF-8");
 				int type = rand.nextInt(3) + 1;
 				if(type == 1) {
 					w.println("Integer");
@@ -50,7 +50,7 @@ class BSTFilesBuilder {
 }
 
 
-class Node<T extends Comparable<T>>{
+class Node<T extends Comparable<T>>{//Generic class
 	private Node<T> left;
 	private Node<T> right;
 	private T data;
@@ -86,10 +86,10 @@ class Node<T extends Comparable<T>>{
 	}
 }
 
-class BST<T extends Comparable<T>>{
+class BST<T extends Comparable<T>>{//Another Generic class
 	ArrayList<Object> list= new ArrayList<Object>();
 	
-	public Node<T> Insert(Node<T> root, T val){
+	public Node<T> Insert(Node<T> root, T val){//Generic method
 		if(root==null){
 			root= new Node<T>(val);
 		}else{
@@ -102,7 +102,7 @@ class BST<T extends Comparable<T>>{
 		return root;
 	}
 	
-	public void Inorder(Node<T> root){
+	public void Inorder(Node<T> root){//Another generic method
 		if(root!= null){
 			Inorder(root.getLeft());
 			list.add(root.getData());
@@ -112,7 +112,7 @@ class BST<T extends Comparable<T>>{
 }
 
 public class Generic{
-	static Node<String> root1= null;
+	static Node<String> root1= null;//static roots so that a new tree can be build everytime!
 	static Node<Integer> root2= null;
 	static Node<Float> root3= null;
 	
@@ -121,8 +121,8 @@ public class Generic{
 		int trees= sc.nextInt();
 		int students= sc.nextInt();
 		Map<Integer, ArrayList<String>> papamap= new HashMap<Integer, ArrayList<String>>(students + 1);//JAVA COLLECTION FRAMEWORK USED!
-		BSTFilesBuilder.createBSTFiles(students, trees);
-		for(int i=0; i<trees; i++){
+		//BSTFilesBuilder.createBSTFiles(students, trees);
+		for(int i=1; i<=trees; i++){
 			Scanner in= new Scanner(new FileReader("./src/" + i + ".txt"));
 			String s= in.next();
 			int n= in.nextInt();
@@ -130,21 +130,28 @@ public class Generic{
 				String head = null;
 				BST<String> stree= new BST<String>();
 				for(int j=0; j<n; j++){
-					String a= sc.next();
+					String a= in.next();
 					if(j==0){
 						head= a;
 					}
-					root1= stree.Insert(root1, a);
+					root1= stree.Insert(root1, a);//builds tree
 				}
-				stree.Inorder(root1);
-				String ans= "";
-				for(int j=0; j<n; j++){
-					ans.concat((String)stree.list.get(j));
+				stree.Inorder(root1);//gets the inorder!
+				String ans= (String)stree.list.get(0);
+				for(int j=1; j<n; j++){
+					ans= ans.concat((String)stree.list.get(j));//remember that sring concat returns a new string that needs to be collected!
 				}
 				for(int j=0; j<n; j++){
 					if(stree.list.get(j).equals(head)){
-						papamap.get(j+1).add(ans);
-						break;
+						if(papamap.get(j)==null){
+							//nayi bnao and then add
+							ArrayList<String> listx= new ArrayList<String>();
+							listx.add(ans);
+							papamap.put(j, listx);
+						}else{
+							papamap.get(j).add(ans);
+							break;
+						}
 					}
 				}
 				root1= null;
@@ -152,21 +159,28 @@ public class Generic{
 				int head = 0;
 				BST<Integer> stree= new BST<Integer>();
 				for(int j=0; j<n; j++){
-					int a= sc.nextInt();
+					int a= in.nextInt();
 					if(j==0){
 						head= a;
 					}
-					root2= stree.Insert(root2, a);
+					root2= stree.Insert(root2, a);//builds tree
 				}
-				stree.Inorder(root2);
+				stree.Inorder(root2);//gets the inorder!
 				int ans= 0;
 				for(int j=0; j<n; j++){
 					ans+= (int)stree.list.get(j);
 				}
 				for(int j=0; j<n; j++){
 					if((int)stree.list.get(j)==head){
-						papamap.get(j+1).add(Integer.toString(ans));
-						break;
+						if(papamap.get(j)==null){
+							//nayi bnao and then add
+							ArrayList<String> listx= new ArrayList<String>();
+							listx.add(Integer.toString(ans));
+							papamap.put(j, listx);
+						}else{
+							papamap.get(j).add(Integer.toString(ans));
+							break;
+						}
 					}
 				}
 				root2= null;
@@ -174,34 +188,42 @@ public class Generic{
 				float head = 0;
 				BST<Float> stree= new BST<Float>();
 				for(int j=0; j<n; j++){
-					float a= sc.nextFloat();
+					float a= in.nextFloat();
 					if(j==0){
 						head= a;
 					}
-					root3= stree.Insert(root3, a);
+					root3= stree.Insert(root3, a);//builds the tree
 				}
-				stree.Inorder(root3);
+				stree.Inorder(root3);//gets the inorder!
 				float ans= 0;
 				for(int j=0; j<n; j++){
 					ans+= (float)stree.list.get(j);
 				}
 				for(int j=0; j<n; j++){
 					if((float)stree.list.get(j)==head){
-						papamap.get(j+1).add(Float.toString(ans));
-						break;
+						if(papamap.get(j)==null){
+							//nayi bnao and then add
+							ArrayList<String> listx= new ArrayList<String>();
+							listx.add(Float.toString(ans));
+							papamap.put(j, listx);
+							
+						}else{
+							papamap.get(j).add(Float.toString(ans));
+							break;
+						}
 					}
 				}
 				root3= null;
 			}
 		}
 		try {
-			PrintWriter w = new PrintWriter("./src/" + "output.txt", "UTF-8");
+			PrintWriter w = new PrintWriter("./src/" + "output.txt", "UTF-8");//creates an output.txt file
 			int count= 0;
 			for(int i=0; i<=students; i++){
-				if(!(papamap.get(i+1).isEmpty())){
+				if(!(papamap.get(i)==null)){
 					w.print(i+1 + ": ");
-					for(int j=0; j<papamap.get(i+1).size(); j++){
-						w.print(papamap.get(i+1).get(j));
+					for(int j=0; j<papamap.get(i).size(); j++){
+						w.print(papamap.get(i).get(j));
 						w.print(" ");
 					}
 					w.println();
@@ -209,7 +231,7 @@ public class Generic{
 					count++;
 				}
 			}
-			w.println(count);
+			w.println(count-1);//number of chocolates
 			w.close();
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
